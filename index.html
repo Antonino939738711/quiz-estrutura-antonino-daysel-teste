@@ -1,211 +1,74 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Avançado - Estruturas de Dados</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  body {
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    font-family: 'Inter', sans-serif;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Estruturas de Dados</title>
 
-  .card {
-    background: linear-gradient(145deg, #ffffff, #e6e6f0);
-    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
-    border-radius: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 35px rgba(0,0,0,0.2);
-  }
-
-  .option {
-    transition: all 0.3s ease;
-  }
-
-  .option:hover {
-    transform: translateX(5px);
-    cursor: pointer;
-    background: #c7d2fe;
-  }
-
-  .progress-bar {
-    height: 10px;
-    background: linear-gradient(to right, #6366f1, #818cf8);
-    border-radius: 9999px;
-    transition: width 0.5s ease-in-out;
-  }
-
-  .fade {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(10px);}
-    to {opacity: 1; transform: translateY(0);}
-  }
-</style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="flex flex-col items-center justify-center min-h-screen p-4">
 
 <div class="w-full max-w-xl">
 
-  <!-- Formulário de entrada -->
-  <div id="startContainer" class="card p-8 mb-6 text-center">
-    <h1 class="text-4xl font-extrabold text-indigo-700 mb-6">Quiz Estruturas de Dados</h1>
-    <input id="username" type="text" placeholder="Digite seu nome" class="border border-gray-300 rounded-lg p-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-inner">
-    <button id="startBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">Começar Quiz</button>
-  </div>
-
-  <!-- Container do Quiz -->
-  <div id="quizContainer" class="hidden card p-8 fade">
-    <div class="mb-6">
-      <div class="w-full bg-gray-300 rounded-full h-2">
-        <div id="progress" class="progress-bar w-0"></div>
-      </div>
+    <!-- Tela inicial -->
+    <div id="startContainer" class="card p-8 mb-6 text-center">
+        <h1 class="text-4xl font-extrabold text-indigo-700 mb-6">Quiz Estruturas de Dados</h1>
+        <input id="username" type="text" placeholder="Digite seu nome"
+               class="border border-gray-300 rounded-lg p-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-inner">
+        <button id="startBtn"
+                class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">
+            Começar Quiz
+        </button>
     </div>
 
-    <div id="questionContainer" class="mb-6">
-      <h2 id="question" class="text-2xl font-semibold text-gray-800 mb-6 fade"></h2>
-      <div id="options" class="space-y-4"></div>
+    <!-- Tela do quiz -->
+    <div id="quizContainer" class="hidden card p-8 fade">
+        <div class="mb-6">
+            <div class="w-full bg-gray-300 rounded-full h-2">
+                <div id="progress" class="progress-bar w-0"></div>
+            </div>
+        </div>
+
+        <div id="questionContainer" class="mb-6">
+            <h2 id="question" class="text-2xl font-semibold text-gray-800 mb-6 fade"></h2>
+            <div id="options" class="space-y-4"></div>
+        </div>
+
+        <div class="flex justify-between items-center mt-4">
+            <span class="text-gray-700 font-semibold text-lg">Pontuação:
+                <span id="score" class="text-indigo-600">0</span></span>
+
+            <button id="nextBtn"
+                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">
+                Próxima
+            </button>
+        </div>
     </div>
 
-    <div class="flex justify-between items-center mt-4">
-      <span class="text-gray-700 font-semibold text-lg">Pontuação: <span id="score" class="text-indigo-600">0</span></span>
-      <button id="nextBtn" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">Próxima</button>
+    <!-- Tela final -->
+    <div id="resultContainer" class="hidden card p-8 text-center fade">
+        <h2 class="text-3xl font-bold text-green-600 mb-4">Parabéns!</h2>
+        <p class="text-gray-800 text-lg mb-6" id="finalScore"></p>
+
+        <div class="bg-indigo-50 p-4 rounded-lg mb-6">
+            <h3 class="text-xl font-semibold mb-3 text-indigo-700">Ranking Local</h3>
+            <ul id="ranking" class="text-gray-700 text-left space-y-2"></ul>
+        </div>
+
+        <button id="restartBtn"
+                class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">
+            Recomeçar Quiz
+        </button>
     </div>
-  </div>
-
-  <!-- Container de resultado -->
-  <div id="resultContainer" class="hidden card p-8 text-center fade">
-    <h2 class="text-3xl font-bold text-green-600 mb-4">Parabéns!</h2>
-    <p class="text-gray-800 text-lg mb-6" id="finalScore"></p>
-
-    <div class="bg-indigo-50 p-4 rounded-lg mb-6">
-      <h3 class="text-xl font-semibold mb-3 text-indigo-700">Ranking Local</h3>
-      <ul id="ranking" class="text-gray-700 text-left space-y-2"></ul>
-    </div>
-
-    <button id="restartBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 shadow-lg transition-all font-semibold">Recomeçar Quiz</button>
-  </div>
 
 </div>
 
-<script>
-const questions = [
-  { question: "O que é uma lista simplesmente ligada?", options: ["Uma lista de elementos ligados apenas ao próximo","Uma lista de elementos ligados ao próximo e ao anterior","Uma lista que não permite remoção de elementos","Uma lista que não armazena valores"], answer: 0 },
-  { question: "Qual é a principal vantagem de uma lista duplamente ligada?", options: ["Permite acesso direto a qualquer posição","Permite percorrer a lista em ambas direções","Não precisa de ponteiros","É mais leve que lista simplesmente ligada"], answer: 1 },
-  { question: "Em uma lista simplesmente ligada, para remover um elemento, você precisa:", options: ["Ter referência do elemento anterior","Saber apenas o valor do elemento","Remover a cabeça apenas","Não precisa de referência"], answer: 0 },
-  { question: "Em uma lista duplamente ligada, cada nó contém:", options: ["Apenas o valor e referência ao próximo","Valor e referências ao próximo e anterior","Somente referência ao anterior","Apenas valor"], answer: 1 },
-  { question: "Qual operação é mais eficiente em lista duplamente ligada do que em simplesmente ligada?", options: ["Percorrer do início ao fim","Inserir no início","Remover um nó específico dado o nó","Acessar o último elemento"], answer: 2 }
-];
-
-let currentQuestion = 0;
-let score = 0;
-let username = "";
-
-const startBtn = document.getElementById('startBtn');
-const quizContainer = document.getElementById('quizContainer');
-const questionEl = document.getElementById('question');
-const optionsEl = document.getElementById('options');
-const nextBtn = document.getElementById('nextBtn');
-const scoreEl = document.getElementById('score');
-const resultContainer = document.getElementById('resultContainer');
-const finalScoreEl = document.getElementById('finalScore');
-const progressBar = document.getElementById('progress');
-const rankingEl = document.getElementById('ranking');
-
-startBtn.addEventListener('click', () => {
-  const inputName = document.getElementById('username').value.trim();
-  if(!inputName){ alert("Digite seu nome para começar!"); return; }
-  username = inputName;
-  document.getElementById('startContainer').classList.add('hidden');
-  quizContainer.classList.remove('hidden');
-  showQuestion();
-  updateProgress();
-});
-
-function showQuestion() {
-  const q = questions[currentQuestion];
-  questionEl.textContent = q.question;
-  optionsEl.innerHTML = '';
-  q.options.forEach((opt, index)=>{
-    const button = document.createElement('button');
-    button.textContent = opt;
-    button.className = "option w-full p-4 border border-gray-300 rounded-lg hover:bg-blue-200 focus:outline-none shadow transition-all text-left font-medium text-gray-800";
-    button.addEventListener('click', ()=>selectOption(index));
-    optionsEl.appendChild(button);
-  });
-}
-
-function selectOption(selectedIndex){
-  const q = questions[currentQuestion];
-  Array.from(optionsEl.children).forEach((btn,index)=>{
-    btn.disabled = true;
-    if(index===q.answer) btn.classList.add('bg-green-300', 'text-gray-900');
-    else if(index===selectedIndex) btn.classList.add('bg-red-300', 'text-gray-900');
-  });
-  if(selectedIndex===q.answer){
-    score+=10;
-    scoreEl.textContent=score;
-  }
-}
-
-nextBtn.addEventListener('click', ()=>{
-  currentQuestion++;
-  if(currentQuestion<questions.length){
-    showQuestion();
-    updateProgress();
-  } else {
-    showResult();
-  }
-});
-
-function updateProgress(){
-  const percent = ((currentQuestion)/questions.length)*100;
-  progressBar.style.width = percent + '%';
-}
-
-function showResult(){
-  quizContainer.classList.add('hidden');
-  resultContainer.classList.remove('hidden');
-  finalScoreEl.textContent = `${username}, sua pontuação final é ${score} pontos!`;
-  saveRanking(username, score);
-  displayRanking();
-}
-
-function saveRanking(name, score){
-  let ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-  ranking.push({name, score});
-  ranking.sort((a,b)=>b.score-a.score);
-  if(ranking.length>5) ranking=ranking.slice(0,5);
-  localStorage.setItem('ranking', JSON.stringify(ranking));
-}
-
-function displayRanking(){
-  const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-  rankingEl.innerHTML='';
-  ranking.forEach((r,index)=>{
-    const li=document.createElement('li');
-    li.textContent=`${index+1}. ${r.name} - ${r.score} pts`;
-    li.className="mb-2 font-medium text-gray-700";
-    rankingEl.appendChild(li);
-  });
-}
-
-document.getElementById('restartBtn').addEventListener('click', ()=>{
-  currentQuestion=0;
-  score=0;
-  scoreEl.textContent=score;
-  document.getElementById('username').value='';
-  resultContainer.classList.add('hidden');
-  document.getElementById('startContainer').classList.remove('hidden');
-  progressBar.style.width='0%';
-});
-</script>
+<script src="js/script.js"></script>
 </body>
 </html>
+
+
